@@ -1,0 +1,7 @@
+C:\Users\keith\Documents\GC\Capstones\Week02_TaskList\Week02_TaskList\bin\Debug\Week02_TaskList.exe.config
+C:\Users\keith\Documents\GC\Capstones\Week02_TaskList\Week02_TaskList\bin\Debug\Week02_TaskList.exe
+C:\Users\keith\Documents\GC\Capstones\Week02_TaskList\Week02_TaskList\bin\Debug\Week02_TaskList.pdb
+C:\Users\keith\Documents\GC\Capstones\Week02_TaskList\Week02_TaskList\obj\Debug\Week02_TaskList.csprojResolveAssemblyReference.cache
+C:\Users\keith\Documents\GC\Capstones\Week02_TaskList\Week02_TaskList\obj\Debug\Week02_TaskList.csproj.CoreCompileInputs.cache
+C:\Users\keith\Documents\GC\Capstones\Week02_TaskList\Week02_TaskList\obj\Debug\Week02_TaskList.exe
+C:\Users\keith\Documents\GC\Capstones\Week02_TaskList\Week02_TaskList\obj\Debug\Week02_TaskList.pdb
