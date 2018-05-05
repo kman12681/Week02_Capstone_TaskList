@@ -61,7 +61,7 @@ namespace Week02_TaskList
 
             while (true)
             {
-                Console.Write("What would you like to do?");
+                Console.Write("What would you like to do?: ");
                 string input = Console.ReadLine();
                 bool success = int.TryParse(input, out int num);
 
@@ -77,22 +77,20 @@ namespace Week02_TaskList
                 {
                     return num;
                 }
-
             }
-
         }
 
-        public static void CurrentList(List<Task> CurrentList)
+        public static void CurrentList(List<Task> list)
         {
-
-            foreach (Task item in CurrentList)
+            Console.WriteLine("Done?\tDue Date\tTeam Member\tDescription");
+            foreach (Task item in list)
             {
-                Console.WriteLine($"{item.TeamMember}, {item.TaskDescription}, {item.DueDate}");
+                Console.WriteLine($"{item.Completion}\t{item.DueDate}\t{item.TeamMember}\t{item.TaskDescription}");
             }
 
         }
 
-        public static void AddTask(List<Task> taskList)
+        public static void AddTask(List<Task> list)
         {
 
             bool whileBool = true;
@@ -109,7 +107,7 @@ namespace Week02_TaskList
                 string newDate = Console.ReadLine();
                 DateTime dt;
                 DateTime.TryParse(newDate, out dt);
-                taskList.Add(new Task(newTeamMember, newTask, dt, false));
+                list.Add(new Task(newTeamMember, newTask, dt, false));
                 Console.WriteLine("Add another?");
                 response = Console.ReadLine();
                 if (response == "quit")
@@ -118,17 +116,17 @@ namespace Week02_TaskList
 
         }
 
-        public static void DeleteTask(List<Task> currentList)
+        public static void DeleteTask(List<Task> list)
         {
 
             Console.Write("Which task would you like to delete?");
             string choice = Console.ReadLine();
-            int index = ValidateDeletion(choice, currentList);
+            int index = ValidateDeletion(choice, list);
             index--;
 
-            if (ConfirmDelete(index, currentList))
+            if (ConfirmDeletion(index, list))
             {
-                currentList.RemoveAt(index);
+                list.RemoveAt(index);
             }
         }
         public static int ValidateDeletion(string input, List<Task> list)
@@ -155,15 +153,18 @@ namespace Week02_TaskList
             }
 
         }
-        public static bool ConfirmDelete(int index, List<Task> list)
+        public static bool ConfirmDeletion(int index, List<Task> list)
         {
             while (true)
             {
-                Console.WriteLine($"Delete {list[index].TeamMember}?");
+                Console.WriteLine("Delete this?\n");
+                Console.WriteLine($"{list[index].Completion}\t{list[index].DueDate}\t{list[index].TeamMember}\t{list[index].TaskDescription}\n");
+                Console.Write("(y/n): ");
                 string response = Console.ReadLine().ToLower();
                 if (response == "y")
                 {
-                    Console.WriteLine("Task deleted.");
+                    Console.WriteLine();
+                    Console.WriteLine("Task deleted.\n");
                     return true;
                 }
                 else if (response != "n")
@@ -185,7 +186,6 @@ namespace Week02_TaskList
         {
             while (true)
             {
-
                 Console.Write("Are you sure you want to quit? (y/n): ");
                 string response = Console.ReadLine().ToLower();
 
@@ -201,28 +201,8 @@ namespace Week02_TaskList
                 {
                     Console.WriteLine("Invalid entry.");
                 }
-
             }
-
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
 
