@@ -7,22 +7,23 @@ using System.Threading.Tasks;
 namespace Week02_TaskList
 {
     class Task
-    {      
+    {
         public string TeamMember { get; set; }
         public string TaskDescription { get; set; }
-        public DateTime DueDate { get; set; }
-        public bool Completion { get; set; } 
+        public string DueDate { get; set; }
+        public string Completion { get; set; }
+        
 
-        public Task(string teamMember, string taskDescription, DateTime dueDate, bool completion)
+        public Task(string teamMember, string taskDescription, DateTime dueDate, string completion)
         {
             TeamMember = teamMember;
             TaskDescription = taskDescription;
-            //DueDate = DateTime.Parse(dueDate);   // DateTime.Now.AddDays(14);
-            Completion = false;           
-
+            DueDate = String.Format("{0:MM/dd/yyyy}", dueDate);
+            Completion = completion;
+            //Count = count;
         }
 
-        
+
 
     }
 }
