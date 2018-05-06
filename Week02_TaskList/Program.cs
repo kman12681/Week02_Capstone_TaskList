@@ -29,7 +29,18 @@ namespace Week02_TaskList
 
                 if (num == 1)
                 {
-                    CurrentList(OurTaskList);
+                    if (OurTaskList.Count == 0)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("*There are currently no tasks*");
+                        Console.WriteLine();
+                        Console.WriteLine("Press any key to return to the main menu.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        CurrentList(OurTaskList);
+                    }
                 }
                 else if (num == 2)
                 {
@@ -37,15 +48,92 @@ namespace Week02_TaskList
                 }
                 else if (num == 3)
                 {
-                    EditTask(OurTaskList);
+                    if (OurTaskList.Count == 0)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("*There are no tasks to edit*");
+                        Console.WriteLine();
+                        Console.WriteLine("Press any key to return to the main menu.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        EditTask(OurTaskList);
+                    }
                 }
                 else if (num == 4)
                 {
-                    DeleteTask(OurTaskList);
+                    if (OurTaskList.Count == 0)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("*There are no tasks to delete*");
+                        Console.WriteLine();
+                        Console.WriteLine("Press any key to return to the main menu.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        DeleteTask(OurTaskList);
+                    }
                 }
                 else if (num == 5)
                 {
-                    MarkTaskComplete(OurTaskList);
+                    if (OurTaskList.Count == 0)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("*There are no tasks to mark*");
+                        Console.WriteLine();
+                        Console.WriteLine("Press any key to return to the main menu.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        MarkTaskComplete(OurTaskList);
+                    }
+                }
+                else if (num == 6)
+                {
+                    if (OurTaskList.Count == 0)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("*There are no tasks to show*");
+                        Console.WriteLine();
+                        Console.WriteLine("Press any key to return to the main menu.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.WriteLine();
+                        Console.Write("Which task # do you want to see?: ");
+                        string input = Console.ReadLine();
+
+                        bool whileBool = true;
+                        while (whileBool)
+                        {
+                            if (!int.TryParse(input, out int number))
+                            {
+                                Console.WriteLine();
+                                Console.Write($">> Invalid input. Enter a number between 1 - {OurTaskList.Count}: ");
+                                input = Console.ReadLine();
+                            }
+                            else if (number < 1 || number > OurTaskList.Count)
+                            {
+                                Console.WriteLine();
+                                Console.Write($">> Invalid input. Enter a number between 1 - {OurTaskList.Count}");
+                                input = Console.ReadLine();
+                            }
+                            else
+                            {
+                                number--;
+                                Console.WriteLine();
+                                CurrentListSingle(OurTaskList, number);
+                                Console.WriteLine();
+                                Console.WriteLine(">> Press any key to return to the main menu.");
+                                Console.ReadKey();
+                                whileBool = false;
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -67,13 +155,14 @@ namespace Week02_TaskList
             Console.WriteLine("3. Edit Task");
             Console.WriteLine("4. Delete Task");
             Console.WriteLine("5. Mark Task complete/incomplete");
-            Console.WriteLine("6. Quit");
+            Console.WriteLine("6. Show Single Task");
+            Console.WriteLine("7. Quit");
             Console.WriteLine();
 
             while (true)
             {
                 Console.Write(">> What would you like to do?: ");
-                string input = Console.ReadLine();                
+                string input = Console.ReadLine();
                 bool success = int.TryParse(input, out int num);
 
                 if (!success)
@@ -101,7 +190,7 @@ namespace Week02_TaskList
             Console.WriteLine("---------------------------------CURRENT LIST--------------------------------");
             Console.WriteLine();
             Console.WriteLine("Complete/Incomplete\tDue Date\tTeam Member\tDescription");
-            Console.WriteLine();            
+            Console.WriteLine();
 
             foreach (Task item in list)
             {
@@ -115,9 +204,9 @@ namespace Week02_TaskList
         }
         public static void CurrentListNoHeader(List<Task> list)
         {
-            int count = 1;           
-            
-            Console.WriteLine();            
+            int count = 1;
+
+            Console.WriteLine();
 
             foreach (Task item in list)
             {
@@ -155,7 +244,7 @@ namespace Week02_TaskList
                     whileBool = false;
                 }
             }
-        }       
+        }
         public static bool AddAnother()
 
         {
@@ -196,7 +285,7 @@ namespace Week02_TaskList
                 if (!DateTime.TryParse(newDate, out dt))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("*Invalid date. Enter dd/mm/yyyy*");
+                    Console.WriteLine("*Invalid date. Enter mm/dd/yyyy*");
                     continue;
                 }
                 else
@@ -214,20 +303,20 @@ namespace Week02_TaskList
             CurrentListNoHeader(list);
             Console.WriteLine();
             Console.Write(">> Which task # would you like to edit?: ");
-           
+
             string choice = Console.ReadLine();
             int index = ValidateEdit(choice, list);
             index--;
 
             EditPart(list, index);
-            
+
         }
         public static void EditPart(List<Task> list, int index)
         {
             string response = "";
             Console.WriteLine();
             CurrentListSingle(list, index);
-            Console.WriteLine();          
+            Console.WriteLine();
             bool whileBool = true;
             while (whileBool)
 
@@ -359,6 +448,7 @@ namespace Week02_TaskList
                 {
                     Console.WriteLine();
                     Console.WriteLine("[Task deleted]");
+                    Console.WriteLine();
                     Console.WriteLine(">> Press any key to return to the main menu.");
                     Console.ReadKey();
                     return true;
