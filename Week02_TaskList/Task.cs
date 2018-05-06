@@ -20,7 +20,7 @@ namespace Week02_TaskList
             TaskDescription = taskDescription;
             DueDate = String.Format("{0:MM/dd/yyyy}", dueDate);
             Completion = completion;
-            //Count = count;
+            
         }
 
 
