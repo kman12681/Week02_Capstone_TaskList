@@ -19,7 +19,7 @@ namespace Week02_TaskList
             OurTaskList.Add(new Task("Gaston", "Collate papers", DateTime.Parse("05/10/18"), "incomplete"));
             OurTaskList.Add(new Task("Jafar", "TPS reports", DateTime.Parse("05/14/18"), "incomplete"));
             OurTaskList.Add(new Task("Ursula", "Fill pez dispensers", DateTime.Parse("05/12/18"), "incomplete"));
-            OurTaskList.Add(new Task("Scar", "Feed fish", DateTime.Parse("05/07/18"), "incomplete"));
+            OurTaskList.Add(new Task("Scar", "Feed fish", DateTime.Parse("05/16/18"), "incomplete"));
             OurTaskList.Add(new Task("Iago", "Grind coffee beans", DateTime.Parse("05/09/18"), "incomplete"));
 
             bool program = true;
@@ -37,9 +37,13 @@ namespace Week02_TaskList
                 }
                 else if (num == 3)
                 {
-                    DeleteTask(OurTaskList);
+                    EditTask(OurTaskList);
                 }
                 else if (num == 4)
+                {
+                    DeleteTask(OurTaskList);
+                }
+                else if (num == 5)
                 {
                     MarkTaskComplete(OurTaskList);
                 }
@@ -52,7 +56,7 @@ namespace Week02_TaskList
             Console.WriteLine("This program will now end.");
             Console.WriteLine();
             Console.ReadLine();
-               
+
         }
 
         public static int Menu()
@@ -60,26 +64,28 @@ namespace Week02_TaskList
             Console.WriteLine();
             Console.WriteLine("1. List Tasks");
             Console.WriteLine("2. Add Task");
-            Console.WriteLine("3. Delete Task");
-            Console.WriteLine("4. Mark Task complete/incomplete");
-            Console.WriteLine("5. Quit");
+            Console.WriteLine("3. Edit Task");
+            Console.WriteLine("4. Delete Task");
+            Console.WriteLine("5. Mark Task complete/incomplete");
+            Console.WriteLine("6. Quit");
             Console.WriteLine();
 
             while (true)
             {
                 Console.Write(">> What would you like to do?: ");
-                string input = Console.ReadLine();
+                string input = Console.ReadLine();                
                 bool success = int.TryParse(input, out int num);
 
                 if (!success)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("That wasn't a number");
+                    Console.WriteLine("*That wasn't a number*");
+                    Console.WriteLine();
                 }
-                else if (!(num > 0 && num < 6))
+                else if (!(num > 0 && num < 7))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("That option doesn't exist");
+                    Console.WriteLine("*That option doesn't exist*");
                 }
                 else
                 {
@@ -92,8 +98,24 @@ namespace Week02_TaskList
         {
             int count = 1;
             Console.WriteLine();
+            Console.WriteLine("---------------------------------CURRENT LIST--------------------------------");
+            Console.WriteLine();
             Console.WriteLine("Complete/Incomplete\tDue Date\tTeam Member\tDescription");
+            Console.WriteLine();            
+
+            foreach (Task item in list)
+            {
+                Console.WriteLine($"{count++}. {item.Completion}\t\t{item.DueDate}\t{item.TeamMember}\t\t{item.TaskDescription}");
+            }
             Console.WriteLine("_____________________________________________________________________________");
+
+        }
+
+        public static void CurrentListNoHeader(List<Task> list)
+        {
+            int count = 1;           
+            
+            Console.WriteLine();            
 
             foreach (Task item in list)
             {
@@ -116,21 +138,21 @@ namespace Week02_TaskList
             Console.WriteLine();
             Console.WriteLine("-----------------------------------ADD TASK----------------------------------");
 
-            bool whileBool = true;            
+            bool whileBool = true;
             while (whileBool)
             {
                 Console.WriteLine();
-                Console.Write("Add Team Member: ");
+                Console.Write(">> Add Team Member: ");
                 string newTeamMember = Console.ReadLine();
-                Console.Write("Task Description: ");
+                Console.Write(">> Task Description: ");
                 string newTask = Console.ReadLine();
                 DateTime dt = ValidDate();
                 string newCompletion = "incomplete";
                 list.Add(new Task(newTeamMember, newTask, dt, newCompletion));
-                if(!AddAnother())
+                if (!AddAnother())
                 {
                     whileBool = false;
-                }                
+                }
             }
         }
 
@@ -139,13 +161,13 @@ namespace Week02_TaskList
             while (true)
             {
                 DateTime dt;
-                Console.Write("Due date: ");
+                Console.Write(">> Due date: ");
                 string newDate = Console.ReadLine();
 
                 if (!DateTime.TryParse(newDate, out dt))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Invalid date. Enter dd/mm/yyyy");
+                    Console.WriteLine("*Invalid date. Enter dd/mm/yyyy*");
                     continue;
                 }
                 else
@@ -158,13 +180,14 @@ namespace Week02_TaskList
 
         public static bool AddAnother()
 
-        {while (true)
+        {
+            while (true)
             {
                 Console.WriteLine();
-                Console.WriteLine("Add another?");
+                Console.WriteLine(">> Add another task?");
                 Console.WriteLine();
-                Console.Write("(y/n): ");
-                string response = Console.ReadLine().ToLower();                
+                Console.Write(">> (y/n): ");
+                string response = Console.ReadLine().ToLower();
                 //Console.WriteLine();
                 if (response == "y")
                 {
@@ -173,7 +196,7 @@ namespace Week02_TaskList
                 else if (response != "n")
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Invalid Entry.\n");
+                    Console.WriteLine("*Invalid Entry*\n");
                 }
                 else
                 {
@@ -182,13 +205,109 @@ namespace Week02_TaskList
             }
         }
 
+        public static void EditTask(List<Task> list)
+        {
+            Console.WriteLine();
+            Console.WriteLine("----------------------------------EDIT TASK----------------------------------");
+            CurrentListNoHeader(list);
+            Console.WriteLine();
+            Console.Write(">> Which task # would you like to edit?: ");
+           
+            string choice = Console.ReadLine();
+            int index = ValidateEdit(choice, list);
+            index--;
+
+            EditPart(list, index);
+            
+        }
+
+        public static void EditPart(List<Task> list, int index)
+        {
+            string response = "";
+            Console.WriteLine();
+            CurrentListSingle(list, index);
+            Console.WriteLine();          
+            bool whileBool = true;
+            while (whileBool)
+
+            {
+                Console.Write(">> Choose category to edit: \"Due date\" (date), \"Team Member\" (name), \"Description\" (task), or (exit) if no more changes: ");
+                response = Console.ReadLine();
+
+                if (response == "date")
+                {
+                    Console.WriteLine();
+                    DateTime dt = ValidDate();
+                    list[index].DueDate = String.Format("{0:M/dd/yyyy}", dt);
+                    Console.WriteLine();
+                    Console.WriteLine($"[Due date changed to: \"{list[index].DueDate}\"]");
+                    Console.WriteLine();
+                    CurrentListSingle(list, index);
+                    Console.WriteLine();
+                }
+                else if (response == "name")
+                {
+                    Console.WriteLine();
+                    Console.Write(">> Enter new name: ");
+                    list[index].TeamMember = Console.ReadLine();
+                    Console.WriteLine();
+                    Console.WriteLine($"[Team member changed to: \"{list[index].TeamMember}\"]");
+                    Console.WriteLine();
+                    CurrentListSingle(list, index);
+                    Console.WriteLine();
+                }
+                else if (response == "task")
+                {
+                    Console.WriteLine();
+                    Console.Write(">> Enter new description: ");
+                    list[index].TaskDescription = Console.ReadLine();
+                    Console.WriteLine();
+                    Console.WriteLine($"[Task description changed to: \"{list[index].TaskDescription}\"]");
+                    Console.WriteLine();
+                    CurrentListSingle(list, index);
+                    Console.WriteLine();
+                }
+                else if (response != "exit")
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("*Invalid entry*");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    whileBool = false;
+                }
+            }
+        }
+
+        public static int ValidateEdit(string input, List<Task> list)
+        {
+            int number;
+            while (true)
+            {
+                if (!int.TryParse(input, out number))
+                {
+                    Console.WriteLine();
+                    Console.Write($">> Invalid input. Enter a number between 1 - {list.Count}: ");
+                    input = Console.ReadLine();
+                }
+                else if (number < 1 || number > list.Count)
+                {
+                    Console.WriteLine();
+                    Console.Write($">> Invalid input. Enter a number between 1 - {list.Count}: ");
+                    input = Console.ReadLine();
+                }
+                else return number;
+            }
+        }
+
         public static void DeleteTask(List<Task> list)
         {
             Console.WriteLine();
             Console.WriteLine("---------------------------------DELETE TASK---------------------------------");
-            CurrentList(list);
+            CurrentListNoHeader(list);
             Console.WriteLine();
-            Console.Write("Which task would you like to delete?: ");
+            Console.Write(">> Which task # would you like to delete?: ");
             string choice = Console.ReadLine();
             int index = ValidateDeletion(choice, list);
             index--;
@@ -206,13 +325,13 @@ namespace Week02_TaskList
                 if (!int.TryParse(input, out number))
                 {
                     Console.WriteLine();
-                    Console.Write($"Invalid input. Enter a number between 1 - {list.Count}: ");
+                    Console.Write($">> Invalid input. Enter a number between 1 - {list.Count}: ");
                     input = Console.ReadLine();
                 }
                 else if (number < 1 || number > list.Count)
                 {
                     Console.WriteLine();
-                    Console.Write($"Invalid input. Enter a number between 1 - {list.Count}: ");
+                    Console.Write($">> Invalid input. Enter a number between 1 - {list.Count}: ");
                     input = Console.ReadLine();
                 }
                 else
@@ -228,8 +347,8 @@ namespace Week02_TaskList
             {
                 Console.WriteLine();
                 Console.WriteLine("Delete this?");
-                Console.WriteLine();                
-                CurrentListSingle(list, index);                
+                Console.WriteLine();
+                CurrentListSingle(list, index);
                 Console.WriteLine();
                 Console.Write("(y/n): ");
                 string response = Console.ReadLine().ToLower();
@@ -256,9 +375,9 @@ namespace Week02_TaskList
         {
             Console.WriteLine();
             Console.WriteLine("----------------------------------MARK TASK----------------------------------");
-            CurrentList(list);
+            CurrentListNoHeader(list);
             Console.WriteLine();
-            Console.Write("Which task would you like to mark?: ");
+            Console.Write(">> Which task would you like to mark?: ");
             string choice = Console.ReadLine();
             int index = ValidateMarkTask(choice, list);
             index--;
@@ -280,13 +399,13 @@ namespace Week02_TaskList
                 if (!int.TryParse(input, out number))
                 {
                     Console.WriteLine();
-                    Console.Write($"Invalid input. Enter a number between 1 - {list.Count}: ");
+                    Console.Write($">> Invalid input. Enter a number between 1 - {list.Count}: ");
                     input = Console.ReadLine();
                 }
                 else if (number < 1 || number > list.Count)
                 {
                     Console.WriteLine();
-                    Console.Write($"Invalid input. Enter a number between 1 - {list.Count}: ");
+                    Console.Write($">> Invalid input. Enter a number between 1 - {list.Count}: ");
                     input = Console.ReadLine();
                 }
                 else
@@ -304,23 +423,23 @@ namespace Week02_TaskList
                 Console.WriteLine("Mark this complete (c) or incomplete (i)\n");
                 CurrentListSingle(list, index);
                 Console.WriteLine();
-                Console.Write("(c/i): ");
+                Console.Write(">> (c/i): ");
                 string response = Console.ReadLine().ToLower();
                 if (response == "c")
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Task marked complete.\n");
+                    Console.WriteLine("[Task marked complete]\n");
                     return true;
                 }
                 else if (response != "i")
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Invalid entry.");
+                    Console.WriteLine("*Invalid entry*");
                 }
                 else
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Task marked incomplete.");
+                    Console.WriteLine("[Task marked incomplete]");
                     return false;
                 }
             }
@@ -348,7 +467,7 @@ namespace Week02_TaskList
                     Console.WriteLine("Invalid entry.");
                 }
             }
-            
+
         }
     }
 }
