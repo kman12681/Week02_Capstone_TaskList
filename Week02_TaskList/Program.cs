@@ -108,9 +108,11 @@ namespace Week02_TaskList
                 Console.WriteLine($"{count++}. {item.Completion}\t\t{item.DueDate}\t{item.TeamMember}\t\t{item.TaskDescription}");
             }
             Console.WriteLine("_____________________________________________________________________________");
+            Console.WriteLine();
+            Console.WriteLine(">> Press any key to return to the main menu.");
+            Console.ReadKey();
 
         }
-
         public static void CurrentListNoHeader(List<Task> list)
         {
             int count = 1;           
@@ -124,7 +126,6 @@ namespace Week02_TaskList
             Console.WriteLine("_____________________________________________________________________________");
 
         }
-
         public static void CurrentListSingle(List<Task> list, int index)
         {
             int count = index + 1;
@@ -154,30 +155,7 @@ namespace Week02_TaskList
                     whileBool = false;
                 }
             }
-        }
-
-        public static DateTime ValidDate()
-        {
-            while (true)
-            {
-                DateTime dt;
-                Console.Write(">> Due date: ");
-                string newDate = Console.ReadLine();
-
-                if (!DateTime.TryParse(newDate, out dt))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("*Invalid date. Enter dd/mm/yyyy*");
-                    continue;
-                }
-                else
-                {
-                    return dt;
-                }
-            }
-
-        }
-
+        }       
         public static bool AddAnother()
 
         {
@@ -200,9 +178,33 @@ namespace Week02_TaskList
                 }
                 else
                 {
+                    Console.WriteLine();
+                    Console.WriteLine(">> Press any key to return to the main menu.\n");
+                    Console.ReadKey();
                     return false;
                 }
             }
+        }
+        public static DateTime ValidDate()
+        {
+            while (true)
+            {
+                DateTime dt;
+                Console.Write(">> Due date: ");
+                string newDate = Console.ReadLine();
+
+                if (!DateTime.TryParse(newDate, out dt))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("*Invalid date. Enter dd/mm/yyyy*");
+                    continue;
+                }
+                else
+                {
+                    return dt;
+                }
+            }
+
         }
 
         public static void EditTask(List<Task> list)
@@ -220,7 +222,6 @@ namespace Week02_TaskList
             EditPart(list, index);
             
         }
-
         public static void EditPart(List<Task> list, int index)
         {
             string response = "";
@@ -275,11 +276,13 @@ namespace Week02_TaskList
                 }
                 else
                 {
+                    Console.WriteLine();
+                    Console.WriteLine(">> Press any key to return to the main menu.");
+                    Console.ReadKey();
                     whileBool = false;
                 }
             }
         }
-
         public static int ValidateEdit(string input, List<Task> list)
         {
             int number;
@@ -355,7 +358,9 @@ namespace Week02_TaskList
                 if (response == "y")
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Task deleted.");
+                    Console.WriteLine("[Task deleted]");
+                    Console.WriteLine(">> Press any key to return to the main menu.");
+                    Console.ReadKey();
                     return true;
                 }
                 else if (response != "n")
@@ -366,6 +371,9 @@ namespace Week02_TaskList
                 }
                 else
                 {
+                    Console.WriteLine();
+                    Console.WriteLine(">> Press any key to return to the main menu.");
+                    Console.ReadKey();
                     return false;
                 }
             }
@@ -429,6 +437,8 @@ namespace Week02_TaskList
                 {
                     Console.WriteLine();
                     Console.WriteLine("[Task marked complete]\n");
+                    Console.WriteLine(">> Press any key to return to the main menu.");
+                    Console.ReadKey();
                     return true;
                 }
                 else if (response != "i")
@@ -439,7 +449,9 @@ namespace Week02_TaskList
                 else
                 {
                     Console.WriteLine();
-                    Console.WriteLine("[Task marked incomplete]");
+                    Console.WriteLine("[Task marked incomplete]\n");
+                    Console.WriteLine(">> Press any key to return to the main menu.");
+                    Console.ReadKey();
                     return false;
                 }
             }
