@@ -8,11 +8,17 @@ namespace Week02_TaskList
 {
     class Task
     {
-        public string TeamMember { get; set; }
-        public string TaskDescription { get; set; }
-        public string DueDate { get; set; }
-        public string Completion { get; set; }
-        
+        private string teamMember;
+        private string taskDescription;
+        private string dueDate;
+        private string completion;
+        private DateTime compareDate;
+
+        public string TeamMember { get => teamMember; set => teamMember = value; }
+        public string TaskDescription { get => taskDescription; set => taskDescription = value; }
+        public string DueDate { get => dueDate; set => dueDate = value; }
+        public string Completion { get => completion; set => completion = value; }
+        public DateTime CompareDate { get => compareDate; set => compareDate = value; }
 
         public Task(string teamMember, string taskDescription, DateTime dueDate, string completion)
         {
@@ -20,10 +26,11 @@ namespace Week02_TaskList
             TaskDescription = taskDescription;
             DueDate = String.Format("{0:MM/dd/yyyy}", dueDate);
             Completion = completion;
+            compareDate = dueDate;
+            
             
         }
 
-
-
+        
     }
 }

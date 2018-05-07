@@ -119,7 +119,7 @@ namespace Week02_TaskList
                             else if (number < 1 || number > OurTaskList.Count)
                             {
                                 Console.WriteLine();
-                                Console.Write($">> Invalid input. Enter a number between 1 - {OurTaskList.Count}");
+                                Console.Write($">> Invalid input. Enter a number between 1 - {OurTaskList.Count}: ");
                                 input = Console.ReadLine();
                             }
                             else
@@ -135,6 +135,10 @@ namespace Week02_TaskList
                         }
                     }
                 }
+                else if (num == 7)
+                {
+                    ShowDateBefore(OurTaskList);
+                }
                 else
                 {
                     program = Quit();
@@ -144,7 +148,6 @@ namespace Week02_TaskList
             Console.WriteLine("This program will now end.");
             Console.WriteLine();
             Console.ReadLine();
-
         }
 
         public static int Menu()
@@ -156,7 +159,8 @@ namespace Week02_TaskList
             Console.WriteLine("4. Delete Task");
             Console.WriteLine("5. Mark Task complete/incomplete");
             Console.WriteLine("6. Show Single Task");
-            Console.WriteLine("7. Quit");
+            Console.WriteLine("7. Check Dates");
+            Console.WriteLine("8. Quit");
             Console.WriteLine();
 
             while (true)
@@ -171,7 +175,7 @@ namespace Week02_TaskList
                     Console.WriteLine("*That wasn't a number*");
                     Console.WriteLine();
                 }
-                else if (!(num > 0 && num < 7))
+                else if (!(num > 0 && num < 9))
                 {
                     Console.WriteLine();
                     Console.WriteLine("*That option doesn't exist*");
@@ -547,6 +551,48 @@ namespace Week02_TaskList
             }
         }
 
+        public static DateTime ValidDateDate()
+        {
+            while (true)
+            {
+                DateTime dt;
+                Console.WriteLine();
+                Console.Write(">> Enter date to check: ");
+                string newDate = Console.ReadLine();
+
+                if (!DateTime.TryParse(newDate, out dt))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("*Invalid date. Enter mm/dd/yyyy*");
+                    continue;
+                }
+                else return dt;
+            }
+        }
+        public static void ShowDateBefore(List<Task> list)
+        {
+            int count = 1;
+            DateTime dt1 = ValidDateDate();
+
+            Console.WriteLine();
+            Console.WriteLine("The following tasks are due before that date:");
+            Console.WriteLine("-----------------------------------------------------------------------------");
+            Console.WriteLine();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                int result = DateTime.Compare(dt1, list[i].CompareDate);
+                if (result > 0)
+                {
+                    Console.WriteLine($"{count++}. {list[i].Completion}\t\t{list[i].DueDate}\t{list[i].TeamMember}\t\t{list[i].TaskDescription}");
+                }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to return to the main menu");
+            Console.ReadKey();
+        }
+
         public static bool Quit()
         {
             while (true)
@@ -569,8 +615,8 @@ namespace Week02_TaskList
                     Console.WriteLine("Invalid entry.");
                 }
             }
-
         }
     }
 }
+
 
